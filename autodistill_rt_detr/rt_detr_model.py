@@ -87,7 +87,7 @@ class RTDetr(pl.LightningModule):
         loss, loss_dict = self.common_step(batch, batch_idx)
         # Determine the batch size
         batch_size = batch["pixel_values"].shape[0] 
-        self.log("training_loss", loss)
+        self.log("training_loss", loss, batch_size=batch_size)
         for k, v in loss_dict.items():
             self.log("train_" + k, v.item(), batch_size=batch_size)
 
@@ -97,7 +97,7 @@ class RTDetr(pl.LightningModule):
         loss, loss_dict = self.common_step(batch, batch_idx)
         # Determine the batch size
         batch_size = batch["pixel_values"].shape[0] 
-        self.log("validation/loss", loss)
+        self.log("validation/loss", loss, batch_size=batch_size)
         for k, v in loss_dict.items():
             self.log("validation_" + k, v.item(), batch_size=batch_size)
 
