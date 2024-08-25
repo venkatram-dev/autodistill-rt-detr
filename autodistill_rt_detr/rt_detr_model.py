@@ -91,6 +91,9 @@ class RTDetr(pl.LightningModule):
         for k, v in loss_dict.items():
             self.log("train_" + k, v.item(), batch_size=batch_size)
 
+        # Apply gradient clipping
+        torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm=0.1)
+
         return loss
 
     def validation_step(self, batch, batch_idx):
