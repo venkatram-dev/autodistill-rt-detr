@@ -89,9 +89,6 @@ class RTDetr(pl.LightningModule):
         for k, v in loss_dict.items():
             self.log("train_" + k, v.item())
 
-        # Apply gradient clipping
-        torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm=0.1)
-
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -155,16 +152,6 @@ class RT_DETR(DetectionTargetModel):
 
             return sv.Detections.from_transformers(transformers_results=results)
 
-    def create_dataloader(self, dataset, batch_size=12, shuffle=False, num_workers=0, prefetch_factor=None):
-        return DataLoader(
-            dataset=dataset,
-            batch_size=batch_size,
-            collate_fn=collate_fn,
-            shuffle=shuffle,
-            num_workers=num_workers,
-            prefetch_factor=prefetch_factor if num_workers > 0 else None
-        )
-
     def train(self, dataset, epochs: int = 100):
         train_directory = os.path.join(dataset, "train")
         val_directory = os.path.join(dataset, "valid")
@@ -183,11 +170,11 @@ class RT_DETR(DetectionTargetModel):
 
         id2label = {k: v["name"] for k, v in labels.items()}
 
-        train_dataloader = self.create_dataloader(
-            train_dataset, batch_size=12, shuffle=True
+        train_dataloader = DataLoader(
+            dataset=train_dataset, batch_size=2, collate_fn=collate_fn, shuffle=True
         )
-        val_dataloader = self.create_dataloader(
-            val_dataset, batch_size=12, shuffle=False,
+        val_dataloader = DataLoader(
+            dataset=val_dataset, batch_size=2, collate_fn=collate_fn, shuffle=False
         )
 
         model = RTDetr(
