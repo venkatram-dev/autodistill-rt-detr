@@ -13,7 +13,7 @@ from transformers import (AutoModelForObjectDetection, RTDetrForObjectDetection,
                           RTDetrImageProcessor)
 
 HOME = os.path.expanduser("~")
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Update to use RT-DETR Image Processor
 image_processor = RTDetrImageProcessor.from_pretrained("PekingU/rtdetr_r50vd")
