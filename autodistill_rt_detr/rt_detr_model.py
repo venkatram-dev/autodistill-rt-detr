@@ -85,17 +85,21 @@ class RTDetr(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         loss, loss_dict = self.common_step(batch, batch_idx)
+        # Determine the batch size
+        batch_size = batch["pixel_values"].shape[0] 
         self.log("training_loss", loss)
         for k, v in loss_dict.items():
-            self.log("train_" + k, v.item())
+            self.log("train_" + k, v.item(), batch_size=batch_size)
 
         return loss
 
     def validation_step(self, batch, batch_idx):
         loss, loss_dict = self.common_step(batch, batch_idx)
+        # Determine the batch size
+        batch_size = batch["pixel_values"].shape[0] 
         self.log("validation/loss", loss)
         for k, v in loss_dict.items():
-            self.log("validation_" + k, v.item())
+            self.log("validation_" + k, v.item(), batch_size=batch_size)
 
         return loss
 
@@ -152,7 +156,7 @@ class RT_DETR(DetectionTargetModel):
 
             return sv.Detections.from_transformers(transformers_results=results)
 
-    def create_dataloader(self, dataset, batch_size=12, shuffle=False, num_workers=0, prefetch_factor=None):
+    def create_dataloader(self, dataset, batch_size=2, shuffle=False, num_workers=0, prefetch_factor=None):
         return DataLoader(
             dataset=dataset,
             batch_size=batch_size,
@@ -181,10 +185,10 @@ class RT_DETR(DetectionTargetModel):
         id2label = {k: v["name"] for k, v in labels.items()}
 
         train_dataloader = self.create_dataloader(
-            train_dataset, batch_size=12, shuffle=True
+            train_dataset, batch_size=2, shuffle=True
         )
         val_dataloader = self.create_dataloader(
-            val_dataset, batch_size=12, shuffle=False,
+            val_dataset, batch_size=2, shuffle=False,
         )
 
         model = RTDetr(
