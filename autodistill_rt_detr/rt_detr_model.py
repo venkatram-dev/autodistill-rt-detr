@@ -87,12 +87,9 @@ class RTDetr(pl.LightningModule):
         loss, loss_dict = self.common_step(batch, batch_idx)
         # Determine the batch size
         batch_size = batch["pixel_values"].shape[0] 
-        self.log("training_loss", loss, on_step=True, on_epoch=True, prog_bar=True, logger=True, batch_size=batch_size)
+        self.log("training_loss", loss, batch_size=batch_size)
         for k, v in loss_dict.items():
-            self.log("train_" + k, v.item(), on_step=True, on_epoch=True, prog_bar=True, logger=True, batch_size=batch_size)
-
-        # Apply gradient clipping
-        #torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm=0.1)
+            self.log("train_" + k, v.item(), batch_size=batch_size)
 
         return loss
 
@@ -100,9 +97,9 @@ class RTDetr(pl.LightningModule):
         loss, loss_dict = self.common_step(batch, batch_idx)
         # Determine the batch size
         batch_size = batch["pixel_values"].shape[0] 
-        self.log("validation/loss", loss, on_step=True, on_epoch=True, prog_bar=True, logger=True, batch_size=batch_size)
+        self.log("validation/loss", loss, batch_size=batch_size)
         for k, v in loss_dict.items():
-            self.log("validation_" + k, v.item(), on_step=True, on_epoch=True, prog_bar=True, logger=True, batch_size=batch_size)
+            self.log("validation_" + k, v.item(), batch_size=batch_size)
 
         return loss
 
