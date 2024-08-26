@@ -15,18 +15,14 @@ Thanks to the paper DETRs Beat YOLOs on Real-time Object Detection and the autho
 Thanks to Hugging Face for their excellent code and model.
 
 
-The RT DETR (Real-Time Detection Transformer) model is a variant of the original DETR (DEtection TRansformer) model specifically optimized for real-time applications. The original DETR, introduced by Facebook AI, utilizes a transformer architecture, commonly seen in NLP tasks, for object detection tasks, marking a departure from the more traditional approaches like Faster R-CNN.
+The RT DETR (Real-Time Detection Transformer) model is a variant of the original DETR (DEtection TRansformer) model specifically optimized for real-time applications. 
+The original DETR utilizes a transformer architecture, commonly seen in NLP tasks, for object detection tasks, marking a departure from the more traditional approaches like Faster R-CNN.
 
 RT DETR: Optimization for Real-Time Performance
-RT DETR is designed to address one of the significant drawbacks of the original DETR—its computational and time cost, which made it less suitable for real-time applications. Here are some enhancements typically found in RT DETR to boost its speed:
 
-Model Simplification: Reduction in the complexity of the transformer encoder and decoder layers, or reducing the number of attention heads.
-
-Feature Pyramids: Integration of feature pyramid structures to enhance feature extraction efficiency, which is critical for detecting objects at different scales more rapidly.
-
-Efficient Backbone: Utilization of more efficient backbones than the standard ResNet used in the original DETR, such as MobileNet or EfficientNet, which are known for their balance between accuracy and computational efficiency.
-
-Optimized Training Techniques: Adjustments in training strategies, such as different learning rate schedules, faster convergence techniques, or data augmentation methods tailored for speed.
+RT DETR is designed to address one of the significant 
+drawbacks of the original DETR—its computational and time cost, 
+which made it less suitable for real-time applications. 
 
 Applications and Use Cases
 
